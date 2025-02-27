@@ -30,11 +30,15 @@ class AdmittanceControlNode(LBRBasePositionCommandNode):
         self._controller = AdmittanceController(
             robot_description=self._robot_description,
             base_link=self.get_parameter("base_link")
-            .get_parameter_value()
-            .string_value,
+            .get_parameter_value().string_value,
             end_effector_link=self.get_parameter("end_effector_link")
-            .get_parameter_value()
-            .string_value,
+            .get_parameter_value().string_value,
+            f_ext_th=self.get_parameter("f_ext_th")
+            .get_parameter_value().double_array_value,
+            dq_gains=self.get_parameter("dq_gains")
+            .get_parameter_value().double_array_value,
+            dx_gains=self.get_parameter("dx_gains")
+            .get_parameter_value().double_array_value,
         )
 
         # log parameters to terminal

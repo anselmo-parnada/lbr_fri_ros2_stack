@@ -79,7 +79,7 @@ controller_interface::return_type LBRStateBroadcaster::update(const rclcpp::Time
                         state_interface_map_[joint_name][HW_IF_COMMANDED_JOINT_POSITION];
 #endif
                     rt_state_publisher_ptr_->msg_.commanded_torque[idx] =
-                        state_interface_map_[joint_name][HW_IF_COMMANDED_TORQUE];
+                        -state_interface_map_[joint_name][HW_IF_COMMANDED_TORQUE];
                     rt_state_publisher_ptr_->msg_.external_torque[idx] =
                         state_interface_map_[joint_name][HW_IF_EXTERNAL_TORQUE];
                     if (rt_state_publisher_ptr_->msg_.session_state == KUKA::FRI::COMMANDING_WAIT ||
@@ -94,7 +94,7 @@ controller_interface::return_type LBRStateBroadcaster::update(const rclcpp::Time
                     rt_state_publisher_ptr_->msg_.measured_joint_position[idx] =
                         state_interface_map_[joint_name][hardware_interface::HW_IF_POSITION];
                     rt_state_publisher_ptr_->msg_.measured_torque[idx] =
-                        state_interface_map_[joint_name][hardware_interface::HW_IF_EFFORT];
+                        -state_interface_map_[joint_name][hardware_interface::HW_IF_EFFORT];
                     ++idx;
                   });
 

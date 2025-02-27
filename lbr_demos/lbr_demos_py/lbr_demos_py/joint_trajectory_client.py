@@ -20,7 +20,7 @@ class JointTrajectoryClient(Node):
             self.get_logger().info("Waiting for action server to become available...")
         self.get_logger().info("Action server available.")
 
-    def execute(self, positions: list, sec_from_start: int = 15):
+    def execute(self, positions: list, sec_from_start: int = 5):
         if len(positions) != 7:
             self.get_logger().error("Invalid number of joint positions.")
             return
@@ -35,7 +35,7 @@ class JointTrajectoryClient(Node):
         point.time_from_start.sec = sec_from_start
 
         for i in range(7):
-            joint_trajectory_goal.trajectory.joint_names.append(f"A{i + 1}")
+            joint_trajectory_goal.trajectory.joint_names.append(f"lbr_A{i + 1}")
 
         joint_trajectory_goal.trajectory.points.append(point)
 

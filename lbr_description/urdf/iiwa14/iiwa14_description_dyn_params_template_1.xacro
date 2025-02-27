@@ -1,0 +1,345 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- robot as extracted via https://github.com/syuntoku14/fusion2urdf -->
+    <xacro:macro name="iiwa14"
+        params="robot_name:=^|lbr mode:=^|mock system_config_path:=^|'$(find lbr_description)/ros2_control/lbr_system_config.yaml'">
+
+        <!-- includes -->
+        <xacro:include filename="$(find lbr_description)/gazebo/lbr_gazebo.xacro" />
+        <xacro:include filename="$(find lbr_description)/ros2_control/lbr_system_interface.xacro" />
+
+        <!-- joint limits via yaml -->
+        <xacro:property name="joint_limits_path"
+            value="$(find lbr_description)/urdf/iiwa14/joint_limits.yaml" />
+        <xacro:property name="joint_limits" value="${xacro.load_yaml(joint_limits_path)}" />
+
+        <!-- robot dynamics via yaml -->
+        <xacro:property name="robot_dynamics_path"
+            value="$(find lbr_description)/urdf/iiwa14/robot_dynamics.yaml" />
+        <xacro:property name="robot_dynamics" value="${xacro.load_yaml(robot_dynamics_path)}" />
+
+        <!-- constants -->
+        <xacro:property name="PI" value="3.1415926535897931" />
+        <xacro:property name="joint_damping" value="10.0" />
+        <xacro:property name="joint_friction" value="0.1" />
+
+        <!-- macros for gazebo / mock / hardware -->
+        <xacro:lbr_gazebo robot_name="${robot_name}" />
+        <xacro:lbr_system_interface
+            robot_name="${robot_name}"
+            mode="${mode}"
+            joint_limits="${joint_limits}"
+            system_config_path="${system_config_path}" />
+
+        <link name="${robot_name}_link_0">
+            <inertial>
+                <origin rpy="0 0 0" xyz="-0.012822 0.0 0.071507" />
+                <mass value="7.050378" />
+                <inertia ixx="0.031226" ixy="0.0" ixz="0.000871" iyy="0.039697" iyz="0.0"
+                    izz="0.043102" />
+            </inertial>
+            <visual>
+                <origin rpy="0 0 ${PI}" xyz="0 0 0" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_0.stl" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 ${PI}" xyz="0 0 0" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_0.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${robot_name}_A1" type="revolute">
+            <origin rpy="0 0 ${PI}" xyz="0.0 0.0 ${0.1475 + 0.0105 + 0.2125 - 0.0105}" />
+            <parent link="${robot_name}_link_0" />
+            <child link="${robot_name}_link_1" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit
+                effort="${joint_limits['A1']['effort']}"
+                lower="${joint_limits['A1']['lower'] * PI / 180}"
+                upper="${joint_limits['A1']['upper'] * PI / 180}"
+                velocity="${joint_limits['A1']['velocity'] * PI / 180}" />
+            <dynamics damping="${robot_dynamics['f_1v']}" friction="${robot_dynamics['f_1s']}" />
+        </joint>
+
+        <link name="${robot_name}_link_1">
+            <inertial>
+                <origin rpy="0 0 0" xyz="${robot_dynamics['l_1x']} ${robot_dynamics['l_1y']} ${robot_dynamics['l_1z']}" />
+                <mass value="${robot_dynamics['m_1']}" />
+                <inertia 
+                    ixx="${robot_dynamics['I_1xx']}" 
+                    ixy="${robot_dynamics['I_1xy']}" 
+                    ixz="${robot_dynamics['I_1xz']}" 
+                    iyy="${robot_dynamics['I_1yy']}" 
+                    iyz="${robot_dynamics['I_1yz']}"
+                    izz="${robot_dynamics['I_1zz']}"
+                />
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0.0 0.0 ${-0.0105 - 0.2125 + 0.0105}" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_1.stl" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0.0 0.0 -0.0105" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_1.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${robot_name}_A2" type="revolute">
+            <origin rpy="${PI/2.0} 0 0" xyz="0.0 0 0.0" />
+            <parent link="${robot_name}_link_1" />
+            <child link="${robot_name}_link_2" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit
+                effort="${joint_limits['A2']['effort']}"
+                lower="${joint_limits['A2']['lower'] * PI / 180}"
+                upper="${joint_limits['A2']['upper'] * PI / 180}"
+                velocity="${joint_limits['A2']['velocity'] * PI / 180}" />
+            <dynamics damping="${robot_dynamics['f_2v']}" friction="${robot_dynamics['f_2s']}" />
+        </joint>
+
+        <link name="${robot_name}_link_2">
+            <inertial>
+                <origin rpy="0 0 0" xyz="${robot_dynamics['l_2x']} ${robot_dynamics['l_2y']} ${robot_dynamics['l_2z']}" />
+                <mass value="${robot_dynamics['m_2']}" />
+                <inertia 
+                    ixx="${robot_dynamics['I_2xx']}" 
+                    ixy="${robot_dynamics['I_2xy']}" 
+                    ixz="${robot_dynamics['I_2xz']}" 
+                    iyy="${robot_dynamics['I_2yy']}" 
+                    iyz="${robot_dynamics['I_2yz']}"
+                    izz="${robot_dynamics['I_2zz']}"
+                />
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0.0 0 -0.01" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_2.stl" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0.0 0 -0.01" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_2.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${robot_name}_A3" type="revolute">
+            <origin rpy="-${PI/2.0} 0 0" xyz="0.0 ${0.1945 + 0.0105 + 0.2255 - 0.0105} 0" />
+            <parent link="${robot_name}_link_2" />
+            <child link="${robot_name}_link_3" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit
+                effort="${joint_limits['A3']['effort']}"
+                lower="${joint_limits['A3']['lower'] * PI / 180}"
+                upper="${joint_limits['A3']['upper'] * PI / 180}"
+                velocity="${joint_limits['A3']['velocity'] * PI / 180}" />
+            <dynamics damping="${robot_dynamics['f_3v']}" friction="${robot_dynamics['f_3s']}" />
+        </joint>
+
+        <link name="${robot_name}_link_3">
+            <inertial>
+                <origin rpy="0 0 0" xyz="${robot_dynamics['l_3x']} ${robot_dynamics['l_3y']} ${robot_dynamics['l_3z']}" />
+                <mass value="${robot_dynamics['m_3']}" />
+                <inertia 
+                    ixx="${robot_dynamics['I_3xx']}" 
+                    ixy="${robot_dynamics['I_3xy']}" 
+                    ixz="${robot_dynamics['I_3xz']}" 
+                    iyy="${robot_dynamics['I_3yy']}" 
+                    iyz="${robot_dynamics['I_3yz']}"
+                    izz="${robot_dynamics['I_3zz']}"
+                />
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0.0 0.0 ${-0.0105 - 0.2255 + 0.0105}" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_3.stl" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0.0 0.0 ${-0.0105 - 0.2255 + 0.0105}" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_3.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${robot_name}_A4" type="revolute">
+            <origin rpy="-${PI/2.0} 0 0" xyz="0.0 0 0.0" />
+            <parent link="${robot_name}_link_3" />
+            <child link="${robot_name}_link_4" />
+            <axis xyz="0.0 0.0 1.0"/>
+            <limit
+                effort="${joint_limits['A4']['effort']}"
+                lower="${joint_limits['A4']['lower'] * PI / 180}"
+                upper="${joint_limits['A4']['upper'] * PI / 180}"
+                velocity="${joint_limits['A4']['velocity'] * PI / 180}" />
+            <dynamics damping="${robot_dynamics['f_4v']}" friction="${robot_dynamics['f_4s']}" />
+        </joint>
+
+        <link name="${robot_name}_link_4">
+            <inertial>
+                <origin rpy="0 0 0" xyz="${robot_dynamics['l_4x']} ${robot_dynamics['l_4y']} ${robot_dynamics['l_4z']}" />
+                <mass value="${robot_dynamics['m_4']}" />
+                <inertia 
+                    ixx="${robot_dynamics['I_4xx']}" 
+                    ixy="${robot_dynamics['I_4xy']}" 
+                    ixz="${robot_dynamics['I_4xz']}" 
+                    iyy="${robot_dynamics['I_4yy']}" 
+                    iyz="${robot_dynamics['I_4yz']}"
+                    izz="${robot_dynamics['I_4zz']}"
+                />
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0.0 0.0 -0.0105" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_4.stl" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0.0 0.0 -0.0105" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_4.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${robot_name}_A5" type="revolute">
+            <origin rpy="${PI / 2.0} 0 0" xyz="0.0 ${-0.1745 - 0.0105 - 0.2255 + 0.0105} 0.0" />
+            <parent link="${robot_name}_link_4" />
+            <child link="${robot_name}_link_5" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit
+                effort="${joint_limits['A5']['effort']}"
+                lower="${joint_limits['A5']['lower'] * PI / 180}"
+                upper="${joint_limits['A5']['upper'] * PI / 180}"
+                velocity="${joint_limits['A5']['velocity'] * PI / 180}" />
+            <dynamics damping="${robot_dynamics['f_5v']}" friction="${robot_dynamics['f_5s']}" />
+        </joint>
+
+        <link name="${robot_name}_link_5">
+            <inertial>
+                <origin rpy="0 0 0" xyz="${robot_dynamics['l_5x']} ${robot_dynamics['l_5y']} ${robot_dynamics['l_5z']}" />
+                <mass value="${robot_dynamics['m_5']}" />
+                <inertia 
+                    ixx="${robot_dynamics['I_5xx']}" 
+                    ixy="${robot_dynamics['I_5xy']}" 
+                    ixz="${robot_dynamics['I_5xz']}" 
+                    iyy="${robot_dynamics['I_5yy']}" 
+                    iyz="${robot_dynamics['I_5yz']}"
+                    izz="${robot_dynamics['I_5zz']}"
+                />
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0.0 0.0 ${-0.0105 - 0.2255 + 0.0105}" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_5.stl" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0.0 0.0 ${-0.0105 - 0.2255 + 0.0105}" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_5.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${robot_name}_A6" type="revolute">
+            <origin rpy="${PI / 2.0} 0 0" xyz="0.0 0.0 0.0" />
+            <parent link="${robot_name}_link_5" />
+            <child link="${robot_name}_link_6" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit
+                effort="${joint_limits['A6']['effort']}"
+                lower="${joint_limits['A6']['lower'] * PI / 180}"
+                upper="${joint_limits['A6']['upper'] * PI / 180}"
+                velocity="${joint_limits['A6']['velocity'] * PI / 180}" />
+            <dynamics damping="${robot_dynamics['f_6v']}" friction="${robot_dynamics['f_6s']}" />
+        </joint>
+
+        <link name="${robot_name}_link_6">
+            <inertial>
+                <origin rpy="0 0 0" xyz="${robot_dynamics['l_6x']} ${robot_dynamics['l_6y']} ${robot_dynamics['l_6z']}" />
+                <mass value="${robot_dynamics['m_6']}" />
+                <inertia 
+                    ixx="${robot_dynamics['I_6xx']}" 
+                    ixy="${robot_dynamics['I_6xy']}" 
+                    ixz="${robot_dynamics['I_6xz']}" 
+                    iyy="${robot_dynamics['I_6yy']}" 
+                    iyz="${robot_dynamics['I_6yz']}"
+                    izz="${robot_dynamics['I_6zz']}"
+                />
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0.0 0.0 -0.0707" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_6.stl" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0.0 0.0 -0.0707" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_6.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${robot_name}_A7" type="revolute">
+            <origin rpy="${-PI/2.0} 0 0" xyz="0.0 0.0 0.0" />
+            <parent link="${robot_name}_link_6" />
+            <child link="${robot_name}_link_7" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit
+                effort="${joint_limits['A7']['effort']}"
+                lower="${joint_limits['A7']['lower'] * PI / 180}"
+                upper="${joint_limits['A7']['upper'] * PI / 180}"
+                velocity="${joint_limits['A7']['velocity'] * PI / 180}" />
+            <dynamics damping="${robot_dynamics['f_7v']}" friction="${robot_dynamics['f_7s']}" />
+        </joint>
+
+        <link name="${robot_name}_link_7">
+            <inertial>
+                <origin rpy="0 0 0" xyz="${robot_dynamics['l_7x']} ${robot_dynamics['l_7y']} ${robot_dynamics['l_7z']}" />
+                <mass value="${robot_dynamics['m_7']}" />
+                <inertia 
+                    ixx="${robot_dynamics['I_7xx']}" 
+                    ixy="${robot_dynamics['I_7xy']}" 
+                    ixz="${robot_dynamics['I_7xz']}" 
+                    iyy="${robot_dynamics['I_7yy']}" 
+                    iyz="${robot_dynamics['I_7yz']}"
+                    izz="${robot_dynamics['I_7zz']}"
+                />
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0.0 0.0 ${-0.0105 + 0.0711 + 0.0105}" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_7.stl" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0.0 0.0 -0.0105" />
+                <geometry>
+                    <mesh filename="package://lbr_description/meshes/iiwa14/mdh_mesh/link_7.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${robot_name}_joint_ee" type="fixed">
+            <parent link="${robot_name}_link_7" />
+            <child link="${robot_name}_link_ee" />
+            <origin xyz="0 0 ${0.0549 - 0.0105 + 0.0711 + 0.0105}" rpy="0 0 ${PI}" />
+        </joint>
+
+        <link name="${robot_name}_link_ee">
+        </link>
+    </xacro:macro>
+</robot>

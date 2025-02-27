@@ -32,7 +32,7 @@ class AdmittanceController(object):
         self._dx_gains = np.diag(dx_gains)
         self._f_ext = np.zeros(6)
         self._f_ext_th = f_ext_th
-        self._alpha = 0.95
+        self._alpha = 0.0
 
     def __call__(self, lbr_state: LBRState, dt: float) -> LBRJointPositionCommand:
         self._q = np.array(lbr_state.measured_joint_position.tolist())
@@ -42,11 +42,15 @@ class AdmittanceController(object):
         self._jacobian_inv = np.linalg.pinv(self._jacobian, rcond=0.1)
         self._f_ext = self._jacobian_inv.T @ self._tau_ext
 
+        # print(self._f_ext)
+
         dx = np.where(
             abs(self._f_ext) > self._f_ext_th,
             self._dx_gains @ np.sign(self._f_ext) * (abs(self._f_ext) - self._f_ext_th),
             0.0,
         )
+
+        print(dx)
 
         # additional smoothing required in python
         self._dq = (

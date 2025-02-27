@@ -55,6 +55,7 @@ bool CommandGuard::command_in_velocity_limits_(const_idl_state_t_ref lbr_state) 
       RCLCPP_ERROR_STREAM(rclcpp::get_logger(LOGGER_NAME),
                           ColorScheme::ERROR << "Velocity not in limits for joint '"
                                              << parameters_.joint_names[i].c_str() << "'"
+                                             << std::abs(prev_measured_joint_position_[i] - lbr_state.measured_joint_position[i]) / dt 
                                              << ColorScheme::ENDC);
       return false;
     }
