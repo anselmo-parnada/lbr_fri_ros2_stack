@@ -274,9 +274,9 @@
 
         <link name="${robot_name}_link_ee">
             <inertial>
-                <origin rpy="0 0 0" xyz="0.01724 0.00679 0.02427" />
-                <mass value="0.412" />
-                <inertia ixx="0.000035" ixy="0.00000" ixz="0.00000" iyy="0.000035" iyz="0.0000" izz="0.000035" />
+                <origin rpy="0 0 0" xyz="0.018174 0.007152 0.023301" />
+                <mass value="0.390933" />
+                <inertia ixx="0.000299" ixy="-0.000149" ixz="-0.000028" iyy="0.000547" iyz="-0.000013" izz="0.000667" />
             </inertial>
             <visual>
                 <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
