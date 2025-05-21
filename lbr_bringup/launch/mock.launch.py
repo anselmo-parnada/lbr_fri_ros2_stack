@@ -4,7 +4,6 @@ from launch.event_handlers import OnProcessStart
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from lbr_bringup.description import LBRDescriptionMixin
 from lbr_bringup.ros2_control import LBRROS2ControlMixin
-from launch_ros.actions import Node
 
 
 def generate_launch_description() -> LaunchDescription:
@@ -43,17 +42,10 @@ def generate_launch_description() -> LaunchDescription:
     )
     ld.add_action(ros2_control_node)
 
-    joint_state_publisher_gui_node = Node(
-        package="joint_state_publisher_gui",
-        executable="joint_state_publisher_gui",
-        namespace=LaunchConfiguration('robot_name'),
+    # joint state broad caster and controller on ros2 control node start
+    joint_state_broadcaster = LBRROS2ControlMixin.node_controller_spawner(
+        controller="joint_state_broadcaster"
     )
-    ld.add_action(joint_state_publisher_gui_node)
-
-    # # joint state broad caster and controller on ros2 control node start
-    # joint_state_broadcaster = LBRROS2ControlMixin.node_controller_spawner(
-    #     controller="joint_state_broadcaster"
-    # )
     controller = LBRROS2ControlMixin.node_controller_spawner(
         controller=LaunchConfiguration("ctrl")
     )
@@ -62,7 +54,7 @@ def generate_launch_description() -> LaunchDescription:
         OnProcessStart(
             target_action=ros2_control_node,
             on_start=[
-                # joint_state_broadcaster,
+                joint_state_broadcaster,
                 controller,
             ],
         )
