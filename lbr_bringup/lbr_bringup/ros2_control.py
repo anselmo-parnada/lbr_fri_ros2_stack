@@ -83,6 +83,7 @@ class LBRROS2ControlMixin:
             executable="ros2_control_node",
             parameters=[
                 {"use_sim_time": use_sim_time},
+                {"thread_priority": 95},
                 PathJoinSubstitution(
                     [
                         FindPackageShare(
