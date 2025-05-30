@@ -16,8 +16,8 @@
 
         <!-- constants -->
         <xacro:property name="PI" value="3.1415926535897931" />
-        <xacro:property name="joint_damping" value="0.2" />
-        <xacro:property name="joint_friction" value="0.2" />
+        <xacro:property name="joint_damping" value="0.1" />
+        <xacro:property name="joint_friction" value="0.1" />
 
         <!-- macros for gazebo / mock / hardware -->
         <xacro:lbr_gazebo robot_name="${robot_name}" />
@@ -52,7 +52,7 @@
                 lower="${joint_limits['A1']['lower'] * PI / 180}"
                 upper="${joint_limits['A1']['upper'] * PI / 180}"
                 velocity="${joint_limits['A1']['velocity'] * PI / 180}" />
-            <dynamics damping="0.2415" friction="0.31909" />
+            <dynamics damping="${joint_damping}" friction="${joint_friction}" />
         </joint>
 
         <link name="${robot_name}_link_1">
@@ -79,7 +79,7 @@
                 lower="${joint_limits['A2']['lower'] * PI / 180}"
                 upper="${joint_limits['A2']['upper'] * PI / 180}"
                 velocity="${joint_limits['A2']['velocity'] * PI / 180}" />
-            <dynamics damping="0.37328" friction="0.1813" />
+            <dynamics damping="${joint_damping}" friction="${joint_friction}" />
         </joint>
 
         <link name="${robot_name}_link_2">
@@ -111,7 +111,7 @@
                 lower="${joint_limits['A3']['lower'] * PI / 180}"
                 upper="${joint_limits['A3']['upper'] * PI / 180}"
                 velocity="${joint_limits['A3']['velocity'] * PI / 180}" />
-            <dynamics damping="0.11025" friction="0.07302" />
+            <dynamics damping="${joint_damping}" friction="${joint_friction}" />
         </joint>
 
         <link name="${robot_name}_link_3">
@@ -148,7 +148,7 @@
                 lower="${joint_limits['A4']['lower'] * PI / 180}"
                 upper="${joint_limits['A4']['upper'] * PI / 180}"
                 velocity="${joint_limits['A4']['velocity'] * PI / 180}" />
-            <dynamics damping="0.1" friction="0.17671" />
+            <dynamics damping="${joint_damping}" friction="${joint_friction}" />
         </joint>
 
         <link name="${robot_name}_link_4">
@@ -180,7 +180,7 @@
                 lower="${joint_limits['A5']['lower'] * PI / 180}"
                 upper="${joint_limits['A5']['upper'] * PI / 180}"
                 velocity="${joint_limits['A5']['velocity'] * PI / 180}" />
-            <dynamics damping="0.1" friction="0.03463" />
+            <dynamics damping="${joint_damping}" friction="${joint_friction}" />
         </joint>
 
         <link name="${robot_name}_link_5">
@@ -217,7 +217,7 @@
                 lower="${joint_limits['A6']['lower'] * PI / 180}"
                 upper="${joint_limits['A6']['upper'] * PI / 180}"
                 velocity="${joint_limits['A6']['velocity'] * PI / 180}" />
-            <dynamics damping="0.12484" friction="0.13391" />
+            <dynamics damping="${joint_damping}" friction="${joint_friction}" />
         </joint>
 
         <link name="${robot_name}_link_6">
@@ -249,7 +249,7 @@
                 lower="${joint_limits['A7']['lower'] * PI / 180}"
                 upper="${joint_limits['A7']['upper'] * PI / 180}"
                 velocity="${joint_limits['A7']['velocity'] * PI / 180}" />
-            <dynamics damping="0.1" friction="0.0871" />
+            <dynamics damping="${joint_damping}" friction="${joint_friction}" />
         </joint>
 
         <link name="${robot_name}_link_7">
@@ -273,29 +273,6 @@
         </joint>
 
         <link name="${robot_name}_link_ee">
-            <inertial>
-                <origin rpy="0 0 0" xyz="0.01823 0.00402 0.02330" />
-                <mass value="0.39127" />
-                <inertia ixx="0.00025" ixy="0.00000" ixz="0.00000" iyy="0.00055" iyz="0.00000" izz="0.00062" />
-            </inertial>
-            <visual>
-                <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
-                <geometry>
-                    <mesh filename="package://lbr_description/meshes/eefs/peg_eef_and_camera_assem.stl" />
-                </geometry>
-                <material name="custom_color">
-                    <color rgba="0.5 0.5 0.5 1.0"/> 
-                </material>
-            </visual>
-        </link>
-
-        <joint name="${robot_name}_joint_tcp" type="fixed">
-            <parent link="${robot_name}_link_ee" />
-            <child link="${robot_name}_link_tcp" />
-            <origin xyz="0 0 0.0995" rpy="0 0 0" />
-        </joint>
-
-        <link name="${robot_name}_link_tcp">
         </link>
     </xacro:macro>
 </robot>

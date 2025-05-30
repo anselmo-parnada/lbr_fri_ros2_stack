@@ -274,9 +274,9 @@
 
         <link name="${robot_name}_link_ee">
             <inertial>
-                <origin rpy="0 0 0" xyz="0.01823 0.00402 0.02330" />
-                <mass value="0.39127" />
-                <inertia ixx="0.00025" ixy="0.00000" ixz="0.00000" iyy="0.00055" iyz="0.00000" izz="0.00062" />
+                <origin rpy="0 0 0" xyz="0.01724 0.00679 0.02427" />
+                <mass value="0.412" />
+                <inertia ixx="0.000035" ixy="0.00000" ixz="0.00000" iyy="0.000035" iyz="0.0000" izz="0.000035" />
             </inertial>
             <visual>
                 <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
@@ -284,7 +284,7 @@
                     <mesh filename="package://lbr_description/meshes/eefs/peg_eef_and_camera_assem.stl" />
                 </geometry>
                 <material name="custom_color">
-                    <color rgba="0.5 0.5 0.5 1.0"/> 
+                    <color rgba="0.5 0.5 0.5 1.0"/> <!-- Light blue with 80% opacity -->
                 </material>
             </visual>
         </link>
