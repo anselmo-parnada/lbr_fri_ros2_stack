@@ -26,7 +26,22 @@
             mode="${mode}"
             joint_limits="${joint_limits}"
             system_config_path="${system_config_path}" />
-      
+
+        <material name="orange">
+            <color rgba="0.949 0.360 0.098 1.0"/>
+        </material>
+
+        <material name="black">
+            <color rgba="0. 0. 0. 1.0"/>
+        </material>
+
+        <material name="grey">
+            <color rgba="0.7 0.7 0.7 1.0"/>
+        </material>
+
+        <material name="light_grey">
+            <color rgba="0.87 0.87 0.87 1.0"/>
+        </material>
         
         <link name="${robot_name}_link_0">
             <inertial>
@@ -39,6 +54,7 @@
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_0.obj" />
                 </geometry>
+                <material name="grey"/>
             </visual>
         </link>
 
@@ -66,6 +82,7 @@
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_1.obj" />
                 </geometry>
+                <material name="grey"/>
             </visual>
         </link>
 
@@ -93,11 +110,13 @@
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_2_grey.obj" />
                 </geometry>
+                <material name="grey"/>
             </visual>
             <visual>
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_2_orange.obj" />
                 </geometry>
+                <material name="orange"/>
             </visual>
         </link>
 
@@ -125,16 +144,19 @@
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_3.obj" />
                 </geometry>
+                <material name="grey"/>
             </visual>
             <visual>
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/band.obj" />
                 </geometry>
+                <material name="light_grey"/>
             </visual>
             <visual>
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/kuka.obj" />
                 </geometry>
+                <material name="black"/>
             </visual>
         </link>
 
@@ -162,11 +184,13 @@
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_4_orange.obj" />
                 </geometry>
+                <material name="orange"/>
             </visual>
             <visual>
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_4_grey.obj" />
                 </geometry>
+                <material name="grey"/>
             </visual>
         </link>
 
@@ -194,16 +218,19 @@
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_5.obj" />
                 </geometry>
+                <material name="grey"/>
             </visual>
             <visual>
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/band.obj" />
                 </geometry>
+                <material name="light_grey"/>
             </visual>
             <visual>
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/kuka.obj" />
                 </geometry>
+                <material name="black"/>
             </visual>
         </link>
 
@@ -231,11 +258,13 @@
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_6_orange.obj" />
                 </geometry>
+                <material name="orange"/>
             </visual>
             <visual>
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_6_grey.obj" />
                 </geometry>
+                <material name="grey"/>
             </visual>
         </link>
 
@@ -263,6 +292,7 @@
                 <geometry>
                     <mesh filename="package://lbr_description/meshes/iiwa14/mjctrl_mesh/link_7.obj" />
                 </geometry>
+                <material name="grey"/>
             </visual>
         </link>
 
