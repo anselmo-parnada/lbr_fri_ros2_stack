@@ -20,6 +20,7 @@ SystemInterface::on_init(const hardware_interface::HardwareInfo &system_info) {
   // setup driver
   lbr_fri_ros2::CommandGuardParameters command_guard_parameters;
   lbr_fri_ros2::StateInterfaceParameters state_interface_parameters;
+  std::array<double, 7> torque_biases;
   for (std::size_t idx = 0; idx < system_info.joints.size(); ++idx) {
     command_guard_parameters.joint_names[idx] = system_info.joints[idx].name;
     command_guard_parameters.max_positions[idx] =
@@ -30,6 +31,9 @@ SystemInterface::on_init(const hardware_interface::HardwareInfo &system_info) {
         std::stod(system_info.joints[idx].parameters.at("max_velocity"));
     command_guard_parameters.max_torques[idx] =
         std::stod(system_info.joints[idx].parameters.at("max_torque"));
+
+    torque_biases[idx] = 
+        std::stod(system_info.joints[idx].parameters.at("torque_bias"));
   }
   state_interface_parameters.external_torque_tau = parameters_.external_torque_tau;
   state_interface_parameters.measured_torque_tau = parameters_.measured_torque_tau;
@@ -37,7 +41,7 @@ SystemInterface::on_init(const hardware_interface::HardwareInfo &system_info) {
   try {
     async_client_ptr_ = std::make_shared<lbr_fri_ros2::AsyncClient>(
         parameters_.client_command_mode, parameters_.joint_position_tau, command_guard_parameters,
-        parameters_.command_guard_variant, state_interface_parameters, parameters_.open_loop);
+        parameters_.command_guard_variant, state_interface_parameters, parameters_.open_loop, torque_biases);
     app_ptr_ = std::make_unique<lbr_fri_ros2::App>(async_client_ptr_);
   } catch (const std::exception &e) {
     RCLCPP_ERROR_STREAM(rclcpp::get_logger(LOGGER_NAME),

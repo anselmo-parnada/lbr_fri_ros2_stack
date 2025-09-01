@@ -6,7 +6,8 @@ AsyncClient::AsyncClient(const KUKA::FRI::EClientCommandMode &client_command_mod
                          const CommandGuardParameters &command_guard_parameters,
                          const std::string &command_guard_variant,
                          const StateInterfaceParameters &state_interface_parameters,
-                         const bool &open_loop)
+                         const bool &open_loop,
+                         const std::array<double, 7> &torque_biases)
     : open_loop_(open_loop) {
   RCLCPP_INFO_STREAM(rclcpp::get_logger(LOGGER_NAME),
                      ColorScheme::OKBLUE << "Configuring client" << ColorScheme::ENDC);
@@ -31,7 +32,7 @@ AsyncClient::AsyncClient(const KUKA::FRI::EClientCommandMode &client_command_mod
   }
   case KUKA::FRI::EClientCommandMode::TORQUE:
     command_interface_ptr_ = std::make_shared<TorqueCommandInterface>(
-        joint_position_tau, command_guard_parameters, command_guard_variant);
+        joint_position_tau, command_guard_parameters, command_guard_variant, torque_biases);
     break;
   case KUKA::FRI::EClientCommandMode::WRENCH:
     command_interface_ptr_ = std::make_shared<WrenchCommandInterface>(

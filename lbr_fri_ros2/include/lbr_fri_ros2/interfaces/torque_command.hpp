@@ -14,9 +14,13 @@ public:
   TorqueCommandInterface() = delete;
   TorqueCommandInterface(const double &joint_position_tau,
                          const CommandGuardParameters &command_guard_parameters,
-                         const std::string &command_guard_variant = "default");
+                         const std::string &command_guard_variant = "default",
+                         const std::array<double, 7> &torque_biases = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
 
   void buffered_command_to_fri(fri_command_t_ref command, const_idl_state_t_ref state) override;
+
+private:
+  std::array<double, 7> torque_biases_;
 };
 } // namespace lbr_fri_ros2
 #endif // LBR_FRI_ROS2__INTERFACES__TORQUE_COMMAND_HPP_

@@ -3,8 +3,11 @@
 namespace lbr_fri_ros2 {
 TorqueCommandInterface::TorqueCommandInterface(
     const double &joint_position_tau, const CommandGuardParameters &command_guard_parameters,
-    const std::string &command_guard_variant)
-    : BaseCommandInterface(joint_position_tau, command_guard_parameters, command_guard_variant) {}
+    const std::string &command_guard_variant, const std::array<double, 7> &torque_biases)
+    : BaseCommandInterface(joint_position_tau, command_guard_parameters, command_guard_variant)
+    {
+      torque_biases_ = torque_biases;
+    }
 
 void TorqueCommandInterface::buffered_command_to_fri(fri_command_t_ref command,
                                                      const_idl_state_t_ref state) {
@@ -36,7 +39,9 @@ void TorqueCommandInterface::buffered_command_to_fri(fri_command_t_ref command,
     // write command_target_ to command_ (with exponential smooth on joint positions), else use
     // internal command_
     joint_position_filter_.compute(command_target_.joint_position, command_.joint_position);
-    command_.torque = command_target_.torque;
+
+    for (size_t i = 0; i < command_.torque.size(); i++)
+      command_.torque[i] = command_target_.torque[i] - torque_biases_[i];
   }
 
   if (!command_guard_) {

@@ -30,7 +30,8 @@ public:
               const CommandGuardParameters &command_guard_parameters,
               const std::string &command_guard_variant,
               const StateInterfaceParameters &state_interface_parameters = {0.04, 0.04},
-              const bool &open_loop = true);
+              const bool &open_loop = true,
+              const std::array<double, 7> &torque_biases = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
 
   inline std::shared_ptr<BaseCommandInterface> get_command_interface() {
     return command_interface_ptr_;
