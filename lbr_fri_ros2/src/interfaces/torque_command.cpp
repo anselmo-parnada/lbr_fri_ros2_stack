@@ -23,6 +23,12 @@ void TorqueCommandInterface::buffered_command_to_fri(fri_command_t_ref command,
 
   if (!joint_position_filter_.is_initialized()) {
     joint_position_filter_.initialize(state.sample_time);
+    for (size_t i = 0; i < torque_biases_.size(); i++)
+      torque_biases_[i] = state.external_torque[i];
+    RCLCPP_INFO(rclcpp::get_logger(LOGGER_NAME()),
+                       "DEBUG: Initialized torque biases to current measured torques [%f, %f, %f, %f, %f, %f, %f]",
+                       state.external_torque[0], state.external_torque[1], state.external_torque[2],
+                       state.external_torque[3], state.external_torque[4], state.external_torque[5], state.external_torque[6]);
   }
 
   if (!command_initialized_) {
